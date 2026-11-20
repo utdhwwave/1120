@@ -262,18 +262,15 @@ const T=[
 
 // 師長與受訪同學
 T.push(
- ["09:00","09:30",GT,"D308","到 D308 簽到（盈均、尹皓在場辦理），依桌牌入座"],
- ["09:30","10:00",GT,"D308","在 D308 迎接訪評委員、專員"],
- ["10:00","10:20",GT,"D308 外","委員開預備會議，本系人員在 D308 外等候，委員開完會再入場"],
- ["10:20","11:00",GT,"D308","相互介紹、受評單位簡報"],
+ ["10:20","11:00",GT,"D308","10:20 到 D308 參加系主任簡報（相互介紹、受評單位簡報），依桌牌入座"],
  ["10:20","11:00",["邱慈穎主任"],"D308","評鑑簡報（簡報檔已存在電子講桌和 3 台委員筆電）"],
  ["11:00","11:30",["邱慈穎主任"],"D308","受評單位主管晤談"],
  ["11:30","12:00",GT,"D308 → 各教室","教學設施參訪。有時間的話可帶委員參觀：D307 → D303 → D302 → D301 → C312 → C313 → C314 → C316a → C316b → C310c → C310d → D310 → D309 → 回 D308"],
  ["12:00","13:00",GT,"D308 外","參訪結束在 D308 外領便當，用餐（D307 禁止飲食）"],
- ["13:55","14:45",GT,"晤談室外","受訪的師長請在受訪前 5 分鐘到晤談室外等候，工作人員會引導，委員通知後入內"],
+ ["13:55","14:45",GT,"晤談室外","被抽訪的師長請參加晤談：在晤談前 5 分鐘到晤談室外準備，工作人員會引導，委員通知後入內"],
  ["16:40","16:50",GT,"D308 外","到 D308 外等候，準備綜合座談入場"],
  ["16:50","17:30",GT,"D308","綜合座談"],
- ["17:30","18:10",GT,"","評鑑結束前用手機掃 QR Code 填評鑑問卷（工作人員會提供紙本 QR Code）"],
+ ["17:30","18:10",GT,"","評鑑結束前用手機掃 QR Code 填寫評鑑中心問卷（工作人員會提供紙本 QR Code）"],
  ["18:10","18:30",GT,"","評鑑結束，領麵包餐盒"],
  ["14:10","14:45",["受訪學生"],"D307","到 D307 準備、簽到（D307 禁止飲食），工作人員會在受訪前 5 分鐘帶你到晤談室"],
  ["14:45","15:30",["受訪學生"],"晤談室","學生晤談。結束後回 D307 用手機掃 QR Code 填評鑑問卷，再領麵包餐盒"],
@@ -290,7 +287,7 @@ const nm=p=>NAME[p]||p;
 const EVENT_DATE="2026-11-20";
 const $=id=>document.getElementById(id);
 const whoTxt=w=>w.includes("全體師長")?"全體師長":w.length>=12?"全體工作人員":w.map(nm).join("、");
-const dur=x=>{x=Math.max(0,Math.round(x));return x>=60?`${Math.floor(x/60)} 小時 ${x%60} 分`:`${x} 分鐘`};
+const dur=x=>{x=Math.max(0,Math.round(x));return x>=60?(x%60?`${Math.floor(x/60)} 小時 ${x%60} 分`:`${x/60} 小時`):`${x} 分鐘`};
 
 const sel=$("who");
 sel.innerHTML='<option value="">訪評行程（一般）</option>'+PEOPLE.map(([g,ps])=>`<optgroup label="${g}">${ps.map(p=>`<option value="${p}">${nm(p)}</option>`).join("")}</optgroup>`).join("")+'<optgroup label="工作人員"><option value="__all">工作人員總覽</option></optgroup>';
@@ -416,7 +413,7 @@ function renderGeneral(n,blk0){
   <tr><th>時間</th><td>${blk===B[B.length-1]?`<span class="when">${blk[0]} 起</span>`:`<span class="when">${blk[0]}–${blk[1]}</span>　<span class="left">剩 ${dur(m(blk[1])-n)}</span>`}</td></tr>
   ${blk[3]?`<tr><th>地點</th><td class="txt">${blk[3]}</td></tr>`:""}</table></div>`;
  } else if(n>=m(B[B.length-1][1])) h+=`<div class="idle">今天的訪評行程結束了，大家辛苦了！</div>`;
- else h+=`<div class="idle">訪評委員 09:30 到校，請師長 09:00 前到 D308 簽到。</div>`;
+ else h+=`<div class="idle">委員預計 09:30–10:00 抵達。師長請在 10:20 到 D308 參加系主任簡報。</div>`;
  $("now").innerHTML=h;
  const nb=B.find(b=>m(b[0])>n);
  $("next").innerHTML=nb?`<h2>下一項<em>${nb[0]} 開始，再 ${dur(m(nb[0])-n)}</em></h2><table class="form"><tr><th>項目</th><td><div class="place sm">${nb[2]}</div></td></tr><tr><th>時間</th><td><span class="when">${nb[0]}–${nb[1]}</span></td></tr>${nb[3]?`<tr><th>地點</th><td class="txt">${nb[3]}</td></tr>`:""}</table>`:`<h2>下一項</h2><div class="idle">沒有後續行程了。</div>`;
